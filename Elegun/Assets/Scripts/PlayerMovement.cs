@@ -42,4 +42,11 @@ public class PlayerMovement : MonoBehaviour
 		float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
 		rb.rotation = angle;
 	}
+
+	#region external control
+	public void UpdateSpeed(float newMoveSpeed)
+	{
+		moveSpeed = newMoveSpeed;
+	}
+	#endregion
 }

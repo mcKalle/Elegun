@@ -19,7 +19,15 @@ public class UiManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{ 
-		//playerMovement.moveSpeed = moveSpeedSlider.value;
-		//moveSpeedText.text = moveSpeedSlider.value.ToString();
+		
+	}
+
+	public void SetSliderValue(float sliderValue)
+	{
+		moveSpeedText.text = sliderValue.ToString("0.00");
+		if (playerMovement != null)
+		{
+			playerMovement.UpdateSpeed(sliderValue);
+		}
 	}
 }
