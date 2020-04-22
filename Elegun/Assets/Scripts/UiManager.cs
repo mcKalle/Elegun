@@ -1,33 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+namespace Assets.Scripts
 {
-	public Slider moveSpeedSlider;
-	public Text moveSpeedText;
-
-	PlayerMovement playerMovement;
-
-	// Start is called before the first frame update
-	void Start()
+	public class UiManager : MonoBehaviour
 	{
-		playerMovement = FindObjectOfType<PlayerMovement>();
-	}
+		public Text moveSpeedText;
 
-	// Update is called once per frame
-	void Update()
-	{ 
-		
-	}
+		public Text elementalSpeedText;
 
-	public void SetSliderValue(float sliderValue)
-	{
-		moveSpeedText.text = sliderValue.ToString("0.00");
-		if (playerMovement != null)
+		PlayerMovement playerMovement;
+		ElementalShield elementalShield;
+
+		// Start is called before the first frame update
+		void Start()
 		{
-			playerMovement.UpdateSpeed(sliderValue);
+			playerMovement = FindObjectOfType<PlayerMovement>();
+			elementalShield = FindObjectOfType<ElementalShield>();
+		}
+
+		public void SetMoveSpeedSliderValue(float sliderValue)
+		{
+			moveSpeedText.text = sliderValue.ToString("0.00");
+			if (playerMovement != null)
+			{
+				playerMovement.UpdateSpeed(sliderValue);
+			}
+		}
+
+		public void SetElementalSpeedSliderValue(float sliderValue)
+		{
+			elementalSpeedText.text = sliderValue.ToString("0.000");
+			if (elementalShield != null)
+			{
+				elementalShield.UpdateSpeed(sliderValue);
+			}
 		}
 	}
 }

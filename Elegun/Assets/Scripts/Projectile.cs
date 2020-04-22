@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Projectile : MonoBehaviour
+namespace Assets.Scripts
 {
-
-	public float ShootingSpeed = 10f;
-
-	private void Awake()
+	public class Projectile : MonoBehaviour
 	{
-		
-	}
 
+		public float ShootingSpeed = 10f;
+
+		private void Awake()
+		{
+		
+		}
+
+	}
 }
