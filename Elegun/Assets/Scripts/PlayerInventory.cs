@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Data;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
 	public class PlayerInventory : MonoBehaviour
 	{
+		public int SelectedMunitionIndex { get; set; }
 
 		public List<Munition> FireElementMunitions { get; private set; }
 		public List<Munition> GrassElementMunitions { get; private set; }
