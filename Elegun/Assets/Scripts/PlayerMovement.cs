@@ -6,7 +6,7 @@ namespace Assets.Scripts
 	public class PlayerMovement : MonoBehaviour
 	{
 
-		public float moveSpeed = 8f;
+		public float moveSpeed = 12f;
 		public float smoothFactor = 0.8f;
 
 		private Rigidbody2D rb;

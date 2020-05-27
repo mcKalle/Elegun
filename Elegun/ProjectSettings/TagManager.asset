@@ -5,6 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collider
+  - Munition
+  - fireMunitionImage
+  - grassMunitionImage
+  - waterMunitionImage
+  - fireMunitionInventoryCount
+  - grassMunitionInventoryCount
+  - waterMunitionInventoryCount
+  - InnerProjectile
+  - MunitionBackground
+  - GunDistanceMarker
+  - BackgroundShader
   layers:
   - Default
   - TransparentFX
