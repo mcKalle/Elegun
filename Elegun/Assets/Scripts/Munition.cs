@@ -5,7 +5,7 @@ namespace Assets.Scripts
 	public class Munition : MonoBehaviour
 	{
 		public int capacity;
-		public string element;
+		public int elementId;
 
 		public float minTimeAlive;
 		public float maxTimeAlive;

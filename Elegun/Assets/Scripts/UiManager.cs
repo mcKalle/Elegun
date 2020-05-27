@@ -25,9 +25,20 @@ namespace Assets.Scripts
 		Image waterMunitionImage;
 		TextMeshProUGUI waterMunitionInventoryCount;
 
-		// Start is called before the first frame update
-		void Awake()
+		public static UiManager Instance { get; private set; }
+
+
+		private void Awake()
 		{
+			if (Instance == null)
+			{
+				Instance = this;
+			}
+			else
+			{
+				Debug.Log("Warning: multiple " + this + " in scene!");
+			}
+
 			playerMovement = FindObjectOfType<PlayerMovement>();
 			elementalShield = FindObjectOfType<ElementalShield>();
 
@@ -38,13 +49,6 @@ namespace Assets.Scripts
 			fireMunitionInventoryCount = GameObject.FindGameObjectWithTag("fireMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
 			grassMunitionInventoryCount = GameObject.FindGameObjectWithTag("grassMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
 			waterMunitionInventoryCount = GameObject.FindGameObjectWithTag("waterMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
-		}
-
-		public void UpdateInventory(PlayerInventory inventory)
-		{
-			fireMunitionInventoryCount.text = inventory.FireElementMunitions.Count.ToString();
-			grassMunitionInventoryCount.text = inventory.GrassElementMunitions.Count.ToString();
-			waterMunitionInventoryCount.text = inventory.WaterElementMunitions.Count.ToString();
 		}
 
 		#region used for debugging and balance testing

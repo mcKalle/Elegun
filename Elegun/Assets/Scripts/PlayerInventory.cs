@@ -6,27 +6,45 @@ namespace Assets.Scripts
 {
 	public class PlayerInventory : MonoBehaviour
 	{
-		public int SelectedMunitionIndex { get; set; }
+		public int InitialMunitionCount;
 
-		public List<Munition> FireElementMunitions { get; private set; }
-		public List<Munition> GrassElementMunitions { get; private set; }
-		public List<Munition> WaterElementMunitions { get; private set; }
+		private int _selectedMunitionIndex;
+
+		public int SelectedMunitionIndex
+		{
+			get { return _selectedMunitionIndex; }
+			set
+			{
+				_selectedMunitionIndex = value;
+				if (_shooting != null)
+				{
+					_shooting.ChangeProjectileColor(_selectedMunitionIndex);
+				}
+			}
+		}
+
+		// key = elementId, value = count of elements
+		[HideInInspector] public Dictionary<int, int> Inventory;
 
 		public List<object> PowerUps { get; private set; }
 
-		private UiManager _uiManager;
+		private Shooting _shooting;
 
 		// Start is called before the first frame update
 		private void Start()
 		{
-			_uiManager = FindObjectOfType<UiManager>();
+			_shooting = FindObjectOfType<Shooting>();
 
-			FireElementMunitions = new List<Munition>();
-			GrassElementMunitions = new List<Munition>();
-			WaterElementMunitions = new List<Munition>();
+			Inventory = new Dictionary<int, int>();
+
+			for (int i = 0; i < GameManager.Instance.Elements.GetLength(0); i++)
+			{
+				Inventory.Add(GameManager.Instance.Elements[i].ElementId, InitialMunitionCount);
+			}
+
 			PowerUps = new List<object>();
 
-			_uiManager.UpdateInventory(this);
+			//_uiManager.UpdateInventory(this);
 		}
 
 		// Update is called once per frame
@@ -37,20 +55,8 @@ namespace Assets.Scripts
 
 		public void AddToInventory(Munition munition)
 		{
-			switch (munition.element)
-			{
-				case "fire":
-					FireElementMunitions.Add(munition);
-					break;
-				case "grass":
-					GrassElementMunitions.Add(munition);
-					break;
-				case "water":
-					WaterElementMunitions.Add(munition);
-					break;
-			}
-
-			_uiManager.UpdateInventory(this);
+			Inventory[munition.elementId] += munition.capacity;
+			Toolbar.Instance.UpdateIndex(munition.elementId, Inventory[munition.elementId]);
 		}
 
 	}

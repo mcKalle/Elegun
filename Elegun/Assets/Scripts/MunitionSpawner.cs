@@ -25,14 +25,8 @@ namespace Assets.Scripts
 		[HideInInspector]
 		public List<Munition> SpawnedMunitions;
 
-
-		//for debugging / testing only
-		private UiManager _uiManager;
-
 		private void Start()
 		{
-			_uiManager = FindObjectOfType<UiManager>();
-
 			SpawnedMunitions = new List<Munition>();
 
 			InitialSpawn();
@@ -44,7 +38,7 @@ namespace Assets.Scripts
 		private void Update()
 		{
 			// debug
-			_uiManager.UpdateSpawnedMunitionCount(SpawnedMunitions.Count(item => item != null));
+			UiManager.Instance.UpdateSpawnedMunitionCount(SpawnedMunitions.Count(item => item != null));
 		}
 
 		//The transform is a quad and this method spawns 
@@ -68,11 +62,11 @@ namespace Assets.Scripts
 		{
 			GameObject munitionObject = Instantiate(MunitionPrefab, transform, false);
 			Munition munition = munitionObject.GetComponent<Munition>();
-			munition.element = RandomizeElement();
+			munition.elementId = RandomizeElement();
 			SetElementColor(munitionObject);
 
 			SpawnedMunitions.Add(munition);
-			
+
 			munitionObject.transform.localPosition = RandomizeCoordinates();
 		}
 
@@ -112,45 +106,20 @@ namespace Assets.Scripts
 			return new Vector2(randomX, randomY);
 		}
 
-		public string RandomizeElement()
+		public int RandomizeElement()
 		{
-			string result = "";
-
-			int randomValue = Random.Range(1, 4);
-
-			switch (randomValue)
-			{
-				case 1:
-					result = "fire";
-					break;
-				case 2:
-					result = "grass";
-					break;
-				case 3:
-					result = "water";
-					break;
-			}
-
-			return result;
+			return Random.Range(0, 3);
 		}
 
 		public void SetElementColor(GameObject munitionGameObject)
 		{
-			SpriteShapeRenderer spriteShapeRenderer = munitionGameObject.GetComponentInChildren<SpriteShapeRenderer>();
+			SpriteRenderer spriteRenderer = munitionGameObject.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(g => g.tag == "MunitionBackground");
 
 			Munition munition = munitionGameObject.GetComponent<Munition>();
 
-			switch (munition.element)
+			if (spriteRenderer != null)
 			{
-				case "fire":
-					spriteShapeRenderer.color = Color.red;
-					break;
-				case "grass":
-					spriteShapeRenderer.color = Color.green;
-					break;
-				case "water":
-					spriteShapeRenderer.color = Color.blue;
-					break;
+				spriteRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementMaterial;
 			}
 		}
 	}

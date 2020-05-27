@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -8,10 +9,10 @@ namespace Assets.Scripts
 		public GameObject ShieldPrefab;
 	
 		public float ShieldDistanceFromCenter = 1.2f;
-		public float ElementalShieldMoveSpeed = 3f;
+		public float ElementalShieldMoveSpeed = 1.9f;
 
-		[Range(2, 12)]
-		public int ShieldCount = 9;
+		[Range(3, 12) ] 
+		public int ShieldCount = 6;
 
 		// Start is called before the first frame update
 		void Start()
@@ -35,7 +36,19 @@ namespace Assets.Scripts
 				float y = Mathf.Sin(angle) * ShieldDistanceFromCenter;
 				Vector3 pos = transform.position + new Vector3(x, y, 0);
 				float angleDegrees = -angle * Mathf.Rad2Deg;
-				Instantiate(ShieldPrefab, pos, Quaternion.identity, transform);
+
+				GameObject shieldGameObject = Instantiate(ShieldPrefab, pos, Quaternion.identity, transform);
+
+				// distribute shield elements evenly
+				SpriteRenderer spriteRenderer = shieldGameObject.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(g => g.tag == "BackgroundShader");
+				
+				if (spriteRenderer != null)
+				{
+					int elementIndex = i % 3;
+
+					spriteRenderer.material =
+						GameManager.Instance.Elements[elementIndex].ElementMaterial;
+				}
 			}
 		}
 

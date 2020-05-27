@@ -12,6 +12,10 @@ TagManager:
   - fireMunitionInventoryCount
   - grassMunitionInventoryCount
   - waterMunitionInventoryCount
+  - InnerProjectile
+  - MunitionBackground
+  - GunDistanceMarker
+  - BackgroundShader
   layers:
   - Default
   - TransparentFX
