@@ -18,7 +18,15 @@ namespace Assets.Scripts
 				_selectedMunitionIndex = value;
 				if (_shooting != null)
 				{
-					_shooting.ChangeProjectileColor(_selectedMunitionIndex);
+					if (ShootingWithSelectedMunitionPossible())
+					{
+						_shooting.LoadedProjectile.SetActive(true);
+						_shooting.ChangeProjectileColor(_selectedMunitionIndex);
+					}
+					else
+					{
+						_shooting.LoadedProjectile.SetActive(false);
+					}
 				}
 			}
 		}
@@ -43,21 +51,36 @@ namespace Assets.Scripts
 			}
 
 			PowerUps = new List<object>();
-
-			//_uiManager.UpdateInventory(this);
-		}
-
-		// Update is called once per frame
-		void Update()
-		{
-
 		}
 
 		public void AddToInventory(Munition munition)
 		{
 			Inventory[munition.elementId] += munition.capacity;
 			Toolbar.Instance.UpdateIndex(munition.elementId, Inventory[munition.elementId]);
+			// make sure to enable the loaded projectile 
+			// (it won't be updated when the current item is 0 and it is collected
+			if (!_shooting.LoadedProjectile.activeInHierarchy && munition.elementId == _selectedMunitionIndex)
+			{
+				_shooting.LoadedProjectile.SetActive(true);
+				_shooting.ChangeProjectileColor(_selectedMunitionIndex);
+			}
 		}
 
+		public void ReduceItemCapacity(int amount)
+		{
+			Inventory[SelectedMunitionIndex] -= amount;
+			Toolbar.Instance.UpdateIndex(_selectedMunitionIndex, Inventory[SelectedMunitionIndex]);
+
+			// if the player runs out of munition, deactivate the loaded projectile
+			if (Inventory[SelectedMunitionIndex] == 0)
+			{
+				_shooting.LoadedProjectile.SetActive(false);
+			}
+		}
+
+		public bool ShootingWithSelectedMunitionPossible()
+		{
+			return Inventory[_selectedMunitionIndex] > 0;
+		}
 	}
 }

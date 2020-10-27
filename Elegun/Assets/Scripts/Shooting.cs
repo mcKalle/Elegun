@@ -30,13 +30,7 @@ namespace Assets.Scripts
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				// Projectile is spawned without parent to get the correct size
-				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
-				projectile.ShootingSpeed = ShootingSpeed;
-				// then the parent is set to the gun in order to rotate it along with the player (as long as the mouse button is held down)
-				projectile.transform.SetParent(gunPos);
-
-				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
+				Shoot(1);
 			}
 		}
 
@@ -56,5 +50,26 @@ namespace Assets.Scripts
 		{
 			ChangeProjectileColor(gameObject, elementId);
 		}
+
+		/// <summary>
+		/// The actual shooting of the projectiles.
+		/// </summary>
+		/// <param name="amountOfShotProjectiles">The amount controls how many projectiles are shot at once.</param>
+		private void Shoot(int amountOfShotProjectiles)
+		{
+			if (inventory.ShootingWithSelectedMunitionPossible())
+			{
+				// Projectile is spawned without parent to get the correct size
+				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
+				// set correct color for the projectile
+				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
+				// send if off
+				projectile.ShootingSpeed = ShootingSpeed;
+				// update the count of the items in the inventory
+				inventory.ReduceItemCapacity(amountOfShotProjectiles);
+			}
+		}
+
+
 	}
 }
