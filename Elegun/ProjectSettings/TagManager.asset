@@ -16,6 +16,7 @@ TagManager:
   - MunitionBackground
   - GunDistanceMarker
   - BackgroundShader
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - ProjectileAndEnemyShields
   - 
   - 
   - 

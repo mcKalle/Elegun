@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Global;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-	public class ElementalShield : MonoBehaviour
+	public class ElementalShieldRotator : MonoBehaviour
 	{
 		public GameObject ShieldPrefab;
 	
@@ -25,7 +26,6 @@ namespace Assets.Scripts
 		{
 			transform.Rotate(new Vector3(0, 0, 1), ElementalShieldMoveSpeed);
 		}
-
 
 		void PlaceShieldObjects()
 		{
@@ -52,6 +52,15 @@ namespace Assets.Scripts
 			}
 		}
 
+		#region collision detection
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.gameObject.tag == Constants.Tags.PROJECTILE)
+			{
+
+			}
+		}
+		#endregion
 
 		#region external control
 		// only used for balance testing & prototyping

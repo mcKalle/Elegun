@@ -14,7 +14,7 @@ namespace Assets.Scripts
 
 		// private and inspector-hidden fields
 		PlayerMovement playerMovement;
-		ElementalShield elementalShield;
+		ElementalShieldRotator elementalShield;
 
 		Image fireMunitionImage;
 		TextMeshProUGUI fireMunitionInventoryCount;
@@ -40,7 +40,7 @@ namespace Assets.Scripts
 			}
 
 			playerMovement = FindObjectOfType<PlayerMovement>();
-			elementalShield = FindObjectOfType<ElementalShield>();
+			elementalShield = FindObjectOfType<ElementalShieldRotator>();
 
 			// init all relevant UI controls
 			fireMunitionImage = GameObject.FindGameObjectWithTag("fireMunitionImage").GetComponent<Image>();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Global;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -16,7 +17,7 @@ namespace Assets.Scripts
 			// reset the parent
 			transform.parent = null;
 
-			maxMoveDistance = GameObject.FindGameObjectWithTag("GunDistanceMarker").transform.position;
+			maxMoveDistance = GameObject.FindGameObjectWithTag(Constants.Tags.GUN_DIST_MARK).transform.position;
 		}
 
 		private void Update()
@@ -31,5 +32,6 @@ namespace Assets.Scripts
 		{
 			transform.position += (transform.up * -1) * Time.deltaTime * ShootingSpeed;
 		}
+
 	}
 }
