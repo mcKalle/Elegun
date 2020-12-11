@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Global;
+﻿using Assets.Scripts.Data;
+using Assets.Scripts.Global;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,10 +9,9 @@ namespace Assets.Scripts
 	public class Projectile : MonoBehaviour
 	{
 		[HideInInspector] public float ShootingSpeed = 25f;
+		[HideInInspector] public string PlayerId { get; set; }
 
-		private Vector3 maxMoveDistance;
-
-		public int elementId = 0;
+		public Element Element { get; set; }
 
 		private void Start()
 		{
@@ -18,16 +19,11 @@ namespace Assets.Scripts
 
 			// reset the parent
 			transform.parent = null;
-
-			maxMoveDistance = GameObject.FindGameObjectWithTag(Constants.Tags.GUN_DIST_MARK).transform.position;
 		}
 
 		private void Update()
 		{
-			if (!(Vector2.Distance(transform.position, maxMoveDistance) < 0.01f))
-			{
-				Move();
-			}
+			Move();
 		}
 
 		private void Move()

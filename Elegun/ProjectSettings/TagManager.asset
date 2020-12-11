@@ -17,6 +17,7 @@ TagManager:
   - GunDistanceMarker
   - BackgroundShader
   - Projectile
+  - Shield
   layers:
   - Default
   - TransparentFX

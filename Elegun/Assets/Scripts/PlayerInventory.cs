@@ -33,7 +33,7 @@ namespace Assets.Scripts
 			}
 		}
 
-		public InventoryElement GetSelectInventoryElement
+		public InventoryElement SelectedInventoryElement
 		{
 			get
 			{
@@ -85,13 +85,13 @@ namespace Assets.Scripts
 
 		public bool ShootingWithSelectedMunitionPossible()
 		{
-			return GetSelectInventoryElement.Count > 0;
+			return SelectedInventoryElement.Count > 0;
 		}
 
 
 		private void ItemShotEvent(object sender, ItemShotEventArgs e)
 		{
-			var shotElement = MunitionItems.Find(item => item.Element.ElementId == e.Projectile.elementId);
+			var shotElement = MunitionItems.Find(item => item.Element.ElementId == e.Projectile.Element.ElementId);
 			shotElement.Count -= 1;
 			InventoryUpdated?.Invoke(this, new InventoryUpdatedEventArgs(shotElement));
 

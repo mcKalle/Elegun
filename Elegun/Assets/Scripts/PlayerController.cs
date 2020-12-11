@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
 	public class PlayerController : MonoBehaviour
 	{
+		public string PlayerId { get; private set; }
+		public bool IsCom;
+
 		private Camera _cam;
 
 		private Vector2 _mousePos;
@@ -11,6 +15,11 @@ namespace Assets.Scripts
 		private Rigidbody2D _rb;
 
 		private PlayerInventory _inventory;
+
+		void Awake()
+		{
+			PlayerId = Guid.NewGuid().ToString();
+		}
 
 		// Start is called before the first frame update
 		void Start()
@@ -29,7 +38,10 @@ namespace Assets.Scripts
 
 		void FixedUpdate()
 		{
-			RotatePlayer();
+			if (!IsCom)
+			{
+				RotatePlayer();
+			}
 		}
 
 		void RotatePlayer()

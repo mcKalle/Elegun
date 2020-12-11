@@ -8,16 +8,20 @@ namespace Assets.Scripts
 	public class ElementalShieldRotator : MonoBehaviour
 	{
 		public GameObject ShieldPrefab;
-	
+
 		public float ShieldDistanceFromCenter = 1.2f;
 		public float ElementalShieldMoveSpeed = 1.9f;
 
-		[Range(3, 12) ] 
+		[Range(3, 12)]
 		public int ShieldCount = 6;
+
+		private PlayerController player;
 
 		// Start is called before the first frame update
 		void Start()
 		{
+			player = transform.parent.GetComponentInChildren<PlayerController>();
+
 			PlaceShieldObjects();
 		}
 
@@ -41,26 +45,25 @@ namespace Assets.Scripts
 
 				// distribute shield elements evenly
 				SpriteRenderer spriteRenderer = shieldGameObject.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(g => g.tag == "BackgroundShader");
-				
+
 				if (spriteRenderer != null)
 				{
 					int elementIndex = i % 3;
 
-					spriteRenderer.material =
-						GameManager.Instance.Elements[elementIndex].ElementMaterial;
+					// set the correct material for the shield
+					// TODO: move this to ElementalShield
+					spriteRenderer.material = GameManager.Instance.Elements[elementIndex].ElementMaterial;
+
+					ElementalShield shield = shieldGameObject.GetComponent<ElementalShield>();
+
+					// this is set because for the collision detection between shield and munition, we want to ignore our own shields
+					shield.PlayerId = player.PlayerId;
+
+					// save the element in the shield as well
+					shield.Element = GameManager.Instance.Elements[elementIndex];
 				}
 			}
 		}
-
-		#region collision detection
-		private void OnTriggerEnter(Collider other)
-		{
-			if (other.gameObject.tag == Constants.Tags.PROJECTILE)
-			{
-
-			}
-		}
-		#endregion
 
 		#region external control
 		// only used for balance testing & prototyping

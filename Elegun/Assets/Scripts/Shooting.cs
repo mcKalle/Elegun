@@ -15,6 +15,7 @@ namespace Assets.Scripts
 
 		// private and inspector-hidden fields
 		private PlayerInventory inventory;
+		private PlayerController player;
 
 		private Transform gunPos;
 
@@ -22,6 +23,8 @@ namespace Assets.Scripts
 		{
 			gunPos = GetComponent<Transform>();
 			inventory = FindObjectOfType<PlayerInventory>();
+
+			player = GetComponentInParent<PlayerController>();
 		}
 
 		private Projectile projectile;
@@ -61,7 +64,11 @@ namespace Assets.Scripts
 			{
 				// Projectile is spawned without parent to get the correct size
 				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
-				projectile.elementId = inventory.SelectedMunitionIndex;
+
+				// this is set because for the collision detection between shield and munition, we want to ignore our own shields
+				projectile.PlayerId = player.PlayerId;
+				
+				projectile.Element = inventory.SelectedInventoryElement.Element;
 				// set correct color for the projectile
 				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
 				// send if off
