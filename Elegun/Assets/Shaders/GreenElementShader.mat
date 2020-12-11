@@ -58,3 +58,4 @@ Material:
     - _ElementColor: {r: 1.7924526, g: 0.31283373, b: 0.31283373, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

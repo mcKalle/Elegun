@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Data;
 using UnityEngine;
+using static Assets.Scripts.Shooting;
 
 namespace Assets.Scripts
 {
@@ -31,10 +33,17 @@ namespace Assets.Scripts
 			}
 		}
 
-		// key = elementId, value = count of elements
-		[HideInInspector] public Dictionary<int, int> Inventory;
+		public InventoryElement GetSelectInventoryElement
+		{
+			get
+			{
+				return MunitionItems.Find(item => item.Element.ElementId == _selectedMunitionIndex);
+			}
+		}
 
-		public List<object> PowerUps { get; private set; }
+		public List<InventoryElement> MunitionItems { get; private set; }
+
+		public object PowerUp { get; private set; }
 
 		private Shooting _shooting;
 
@@ -43,20 +52,28 @@ namespace Assets.Scripts
 		{
 			_shooting = FindObjectOfType<Shooting>();
 
-			Inventory = new Dictionary<int, int>();
+			_shooting.ItemShot += ItemShotEvent; ;
+
+			MunitionItems = new List<InventoryElement>();
 
 			for (int i = 0; i < GameManager.Instance.Elements.GetLength(0); i++)
 			{
-				Inventory.Add(GameManager.Instance.Elements[i].ElementId, InitialMunitionCount);
+				MunitionItems.Add(new InventoryElement(GameManager.Instance.Elements[i], InitialMunitionCount));
 			}
 
-			PowerUps = new List<object>();
+			PowerUp = new object();
 		}
 
 		public void AddToInventory(Munition munition)
 		{
-			Inventory[munition.elementId] += munition.capacity;
-			Toolbar.Instance.UpdateIndex(munition.elementId, Inventory[munition.elementId]);
+			var inventoryElement = MunitionItems.Find(item => item.Element.ElementId == munition.elementId);
+			if (inventoryElement != null)
+			{
+				inventoryElement.Count += munition.capacity;
+			}
+
+			InventoryUpdated?.Invoke(this, new InventoryUpdatedEventArgs(inventoryElement));
+
 			// make sure to enable the loaded projectile 
 			// (it won't be updated when the current item is 0 and it is collected
 			if (!_shooting.LoadedProjectile.activeInHierarchy && munition.elementId == _selectedMunitionIndex)
@@ -66,21 +83,37 @@ namespace Assets.Scripts
 			}
 		}
 
-		public void ReduceItemCapacity(int amount)
+		public bool ShootingWithSelectedMunitionPossible()
 		{
-			Inventory[SelectedMunitionIndex] -= amount;
-			Toolbar.Instance.UpdateIndex(_selectedMunitionIndex, Inventory[SelectedMunitionIndex]);
+			return GetSelectInventoryElement.Count > 0;
+		}
+
+
+		private void ItemShotEvent(object sender, ItemShotEventArgs e)
+		{
+			var shotElement = MunitionItems.Find(item => item.Element.ElementId == e.Projectile.elementId);
+			shotElement.Count -= 1;
+			InventoryUpdated?.Invoke(this, new InventoryUpdatedEventArgs(shotElement));
 
 			// if the player runs out of munition, deactivate the loaded projectile
-			if (Inventory[SelectedMunitionIndex] == 0)
+			if (shotElement.Count == 0)
 			{
 				_shooting.LoadedProjectile.SetActive(false);
 			}
 		}
 
-		public bool ShootingWithSelectedMunitionPossible()
+		#region EventHandling
+		public event EventHandler<InventoryUpdatedEventArgs> InventoryUpdated;
+
+		public class InventoryUpdatedEventArgs : EventArgs
 		{
-			return Inventory[_selectedMunitionIndex] > 0;
+			public InventoryUpdatedEventArgs(InventoryElement inventoryElement)
+			{
+				InventoryElement = inventoryElement;
+			}
+
+			public InventoryElement InventoryElement { get; set; }
 		}
+		#endregion
 	}
 }

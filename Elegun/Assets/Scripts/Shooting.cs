@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,7 +18,6 @@ namespace Assets.Scripts
 
 		private Transform gunPos;
 
-
 		private void Start()
 		{
 			gunPos = GetComponent<Transform>();
@@ -30,7 +30,7 @@ namespace Assets.Scripts
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				Shoot(1);
+				Shoot();
 			}
 		}
 
@@ -55,21 +55,35 @@ namespace Assets.Scripts
 		/// The actual shooting of the projectiles.
 		/// </summary>
 		/// <param name="amountOfShotProjectiles">The amount controls how many projectiles are shot at once.</param>
-		private void Shoot(int amountOfShotProjectiles)
+		public void Shoot()
 		{
 			if (inventory.ShootingWithSelectedMunitionPossible())
 			{
 				// Projectile is spawned without parent to get the correct size
 				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
+				projectile.elementId = inventory.SelectedMunitionIndex;
 				// set correct color for the projectile
 				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
 				// send if off
 				projectile.ShootingSpeed = ShootingSpeed;
-				// update the count of the items in the inventory
-				inventory.ReduceItemCapacity(amountOfShotProjectiles);
+
+				// invoke event
+				ItemShot?.Invoke(this, new ItemShotEventArgs(projectile));
 			}
 		}
 
+		#region EventHandling
+		public event EventHandler<ItemShotEventArgs> ItemShot;
 
+		public class ItemShotEventArgs : EventArgs
+		{
+			public ItemShotEventArgs(Projectile projectile)
+			{
+				Projectile = projectile;
+			}
+
+			public Projectile Projectile { get; set; }
+		}
+		#endregion
 	}
 }

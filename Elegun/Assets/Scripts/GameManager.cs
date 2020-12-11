@@ -19,6 +19,8 @@ namespace Assets.Scripts
 		public float ComShieldRotationSpeed = 1.4f;
 		public float ComMoveSpeed = 10f;
 
+		public PlayerController mainPlayer;
+
 		private void Awake()
 		{
 			if (Instance == null)
@@ -35,6 +37,8 @@ namespace Assets.Scripts
 		void Start()
 		{
 			InitSettings();
+
+			InitUi();
 		}
 
 		// Update is called once per frame
@@ -66,6 +70,12 @@ namespace Assets.Scripts
 					shield.ElementalShieldMoveSpeed = ComShieldRotationSpeed;
 				}
 			}
+
+		}
+
+		public void InitUi()
+		{
+
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Assets.Scripts.Data;
 using UnityEngine;
+using static Assets.Scripts.PlayerInventory;
 
 namespace Assets.Scripts
 {
@@ -30,6 +31,7 @@ namespace Assets.Scripts
 		private void Start()
 		{
 			_playerInventory = FindObjectOfType<PlayerInventory>();
+			_playerInventory.InventoryUpdated += InventoryUpdatedEvent;
 		}
 
 		private void Update()
@@ -63,7 +65,7 @@ namespace Assets.Scripts
 			}
 		}
 
-		public void UpdateIndex(int index, int value)
+		private void UpdateIndex(int index, int value)
 		{
 			var inventorySlot = InventorySlots.ToList().FirstOrDefault(i => i.itemID == index);
 
@@ -72,5 +74,12 @@ namespace Assets.Scripts
 				inventorySlot.text.text = value.ToString();
 			}
 		}
+
+		#region EventHandling
+		private void InventoryUpdatedEvent(object sender, InventoryUpdatedEventArgs e)
+		{
+			UpdateIndex(e.InventoryElement.Element.ElementId, e.InventoryElement.Count);
+		}
+		#endregion
 	}
 }

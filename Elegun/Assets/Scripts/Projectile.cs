@@ -10,6 +10,8 @@ namespace Assets.Scripts
 
 		private Vector3 maxMoveDistance;
 
+		public int elementId = 0;
+
 		private void Start()
 		{
 			Destroy(gameObject, 3f);

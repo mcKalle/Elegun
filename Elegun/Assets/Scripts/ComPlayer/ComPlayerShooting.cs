@@ -66,7 +66,6 @@ namespace Assets.Scripts
 				// send if off
 				projectile.ShootingSpeed = ShootingSpeed;
 				// update the count of the items in the inventory
-				inventory.ReduceItemCapacity(amountOfShotProjectiles);
 			}
 		}
 
