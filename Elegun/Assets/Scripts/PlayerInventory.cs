@@ -102,7 +102,7 @@ namespace Assets.Scripts
 			}
 		}
 
-		#region EventHandling
+		#region Events
 		public event EventHandler<InventoryUpdatedEventArgs> InventoryUpdated;
 
 		public class InventoryUpdatedEventArgs : EventArgs

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Global;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,26 +35,42 @@ namespace Assets.Scripts
 				if (projectile != null)
 				{
 					// ignore the collision, if the projectile is coming from the same player
-					if (projectile.PlayerId != PlayerId)
-					{
-						Debug.Log($"The shield with the element { Element.Name } was hit by the projectile of element type { projectile.Element.Name }");
+					//if (projectile.PlayerId != PlayerId)
+					//{
+					Debug.Log($"The shield with the element { Element.Name } was hit by the projectile of element type { projectile.Element.Name }");
 
-						// only destroy the shield, if it was hit by an effective element projectile
-						if (projectile.Element.ElementId == Element.CounterPartElementId)
-						{
-							// destroy the shield
-							Destroy(gameObject, 0.1f);
-							// destroy the projectile
-							Destroy(col.gameObject, 0f);
-						}
-						else
-						{
-							// only destroy the projectile
-							Destroy(col.gameObject, 0f);
-						}
+					// only destroy the shield, if it was hit by an effective element projectile
+					if (projectile.Element.ElementId == Element.CounterPartElementId)
+					{
+						// destroy the shield
+						Destroy(gameObject, 0.1f);
+						// invoke event
+						ShieldDestroyed?.Invoke(this, new ShieldDestroyedEventArgs(this));
+						// destroy the projectile
+						Destroy(col.gameObject, 0f);
 					}
+					else
+					{
+						// only destroy the projectile
+						Destroy(col.gameObject, 0f);
+					}
+					//}
 				}
 			}
 		}
+
+		#region Events
+		public event EventHandler<ShieldDestroyedEventArgs> ShieldDestroyed;
+
+		public class ShieldDestroyedEventArgs : EventArgs
+		{
+			public ShieldDestroyedEventArgs(ElementalShield elementalShield)
+			{
+				ElementalShield = elementalShield;
+			}
+
+			public ElementalShield ElementalShield { get; set; }
+		}
+		#endregion
 	}
 }

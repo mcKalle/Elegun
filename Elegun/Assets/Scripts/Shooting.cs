@@ -79,7 +79,7 @@ namespace Assets.Scripts
 			}
 		}
 
-		#region EventHandling
+		#region Events
 		public event EventHandler<ItemShotEventArgs> ItemShot;
 
 		public class ItemShotEventArgs : EventArgs

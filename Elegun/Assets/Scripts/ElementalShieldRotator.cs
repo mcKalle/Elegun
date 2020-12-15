@@ -1,7 +1,10 @@
-﻿using Assets.Scripts.Global;
+﻿using Assets.Scripts.Data;
+using Assets.Scripts.Global;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Assets.Scripts.ElementalShield;
 
 namespace Assets.Scripts
 {
@@ -61,9 +64,41 @@ namespace Assets.Scripts
 
 					// save the element in the shield as well
 					shield.Element = GameManager.Instance.Elements[elementIndex];
+					player.shieldCounts[shield.Element.ElementId]++;
+
+					// update UI
+					ShieldsUpdated?.Invoke(this, new ShieldUpdatedEventArgs(shield.Element));
+
+					shield.ShieldDestroyed += ShieldDestroyedEvent;
 				}
 			}
 		}
+
+		private void ShieldDestroyedEvent(object sender, ShieldDestroyedEventArgs e)
+		{
+			int currentCount = player.shieldCounts[e.ElementalShield.Element.ElementId];
+
+			if (currentCount > 0)
+			{
+				player.shieldCounts[e.ElementalShield.Element.ElementId]--;
+			}
+
+			ShieldsUpdated?.Invoke(this, new ShieldUpdatedEventArgs(e.ElementalShield.Element));
+		}
+
+		#region Events
+		public event EventHandler<ShieldUpdatedEventArgs> ShieldsUpdated;
+
+		public class ShieldUpdatedEventArgs : EventArgs
+		{
+			public ShieldUpdatedEventArgs(Element element)
+			{
+				Element = element;
+			}
+
+			public Element Element { get; set; }
+		}
+		#endregion
 
 		#region external control
 		// only used for balance testing & prototyping

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,6 +8,10 @@ namespace Assets.Scripts
 	public class PlayerController : MonoBehaviour
 	{
 		public string PlayerId { get; private set; }
+
+		// key: Element ID, value: count of shields
+		public Dictionary <int, int> shieldCounts { get; private set; }
+
 		public bool IsCom;
 
 		private Camera _cam;
@@ -19,6 +25,11 @@ namespace Assets.Scripts
 		void Awake()
 		{
 			PlayerId = Guid.NewGuid().ToString();
+			shieldCounts = new Dictionary<int, int>();
+			foreach (var element in GameManager.Instance.Elements)
+			{
+				shieldCounts.Add(element.ElementId, 0);
+			}
 		}
 
 		// Start is called before the first frame update
@@ -48,7 +59,7 @@ namespace Assets.Scripts
 		{
 			Vector2 lookDir = _mousePos - _rb.position;
 			float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
-			transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
+			transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
 		}
 
 

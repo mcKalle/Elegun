@@ -704,6 +704,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109304825}
   m_CullTransparentMesh: 0
+--- !u!114 &184209743 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3458258996015249644, guid: 5135f2646ec30c54d8294773f388e072,
+    type: 3}
+  m_PrefabInstance: {fileID: 5042948724389427513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf04df7764706d1449cf13777bb944a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &195357017
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,7 +773,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cd15ec2e6add2a24b8f4b7e72a677dfa, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1618,7 +1630,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f5a23fb7c20825f45a536d8cd7d4ef6d, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3109,7 +3121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f432281fd3eec740923fbdba5a6c535, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4230,6 +4242,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1879107972}
   m_CullTransparentMesh: 0
+--- !u!114 &1890702512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5042948723677907040, guid: 5135f2646ec30c54d8294773f388e072,
+    type: 3}
+  m_PrefabInstance: {fileID: 5042948724389427513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b965934d2c35454da04448aaf90ea86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1911509984 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5042948723813608644, guid: c25e8f69542b05146a84431545b580f4,
@@ -4514,9 +4538,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f095756a88b9774b9f6fc8a0343ec19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 184209743}
+  playerController: {fileID: 2115783601}
+  shieldRotator: {fileID: 1890702512}
   moveSpeedText: {fileID: 979318366}
   elementalSpeedText: {fileID: 557936459}
   munitionItemCountText: {fileID: 586334135}
+  redShieldImageControl: {fileID: 195357019}
+  greenShieldImageControl: {fileID: 684961186}
+  blueShieldImageControl: {fileID: 1459154667}
 --- !u!1 &2078795392
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,7 +5083,7 @@ PrefabInstance:
     - target: {fileID: 5042948723677907040, guid: 5135f2646ec30c54d8294773f388e072,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5042948723813608647, guid: 5135f2646ec30c54d8294773f388e072,
         type: 3}
