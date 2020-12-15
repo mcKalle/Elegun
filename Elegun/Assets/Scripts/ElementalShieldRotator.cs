@@ -12,7 +12,7 @@ namespace Assets.Scripts
 	{
 		public GameObject ShieldPrefab;
 
-		public float ShieldDistanceFromCenter = 1.2f;
+		public float ShieldDistanceFromCenter = 1f;
 		public float ElementalShieldMoveSpeed = 1.9f;
 
 		[Range(3, 12)]
@@ -44,44 +44,31 @@ namespace Assets.Scripts
 				Vector3 pos = transform.position + new Vector3(x, y, 0);
 				float angleDegrees = -angle * Mathf.Rad2Deg;
 
+				int elementIndex = i % 3;
+
 				GameObject shieldGameObject = Instantiate(ShieldPrefab, pos, Quaternion.identity, transform);
+				ElementalShield shield = shieldGameObject.GetComponent<ElementalShield>();
 
-				// distribute shield elements evenly
-				SpriteRenderer spriteRenderer = shieldGameObject.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(g => g.tag == "BackgroundShader");
+				// set the element in the shield
+				shield.Element = GameManager.Instance.Elements[elementIndex];
+				// render it
+				shield.RenderShield();
 
-				if (spriteRenderer != null)
-				{
-					int elementIndex = i % 3;
+				// assignment to player 
+				// this is set because for the collision detection between shield and munition, we want to ignore our own shields
+				shield.PlayerId = player.PlayerId;
+				player.shieldCounts[shield.Element.ElementId]++;
 
-					// set the correct material for the shield
-					// TODO: move this to ElementalShield
-					spriteRenderer.material = GameManager.Instance.Elements[elementIndex].ElementMaterial;
+				// update UI
+				ShieldsUpdated?.Invoke(this, new ShieldUpdatedEventArgs(shield.Element));
 
-					ElementalShield shield = shieldGameObject.GetComponent<ElementalShield>();
-
-					// this is set because for the collision detection between shield and munition, we want to ignore our own shields
-					shield.PlayerId = player.PlayerId;
-
-					// save the element in the shield as well
-					shield.Element = GameManager.Instance.Elements[elementIndex];
-					player.shieldCounts[shield.Element.ElementId]++;
-
-					// update UI
-					ShieldsUpdated?.Invoke(this, new ShieldUpdatedEventArgs(shield.Element));
-
-					shield.ShieldDestroyed += ShieldDestroyedEvent;
-				}
+				shield.ShieldDestroyed += ShieldDestroyedEvent;
 			}
 		}
 
 		private void ShieldDestroyedEvent(object sender, ShieldDestroyedEventArgs e)
 		{
-			int currentCount = player.shieldCounts[e.ElementalShield.Element.ElementId];
-
-			if (currentCount > 0)
-			{
-				player.shieldCounts[e.ElementalShield.Element.ElementId]--;
-			}
+			player.RemoveShield(e.ElementalShield);
 
 			ShieldsUpdated?.Invoke(this, new ShieldUpdatedEventArgs(e.ElementalShield.Element));
 		}

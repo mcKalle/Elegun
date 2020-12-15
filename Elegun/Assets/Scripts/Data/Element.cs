@@ -14,6 +14,7 @@ namespace Assets.Scripts.Data
 
 		public Sprite MunitionSprite;
 		public Sprite ProjectileSprite;
+
 		public Sprite ShieldSprite;
 
 		public int CounterPartElementId;

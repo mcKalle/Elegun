@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Assets.Scripts
 {
@@ -14,16 +15,19 @@ namespace Assets.Scripts
 		[HideInInspector]
 		public string PlayerId { get; set; }
 
-		// Start is called before the first frame update
-		void Start()
+		public SpriteRenderer mainSprite;
+		public SpriteRenderer materialRenderer;
+
+		/// <summary>
+		/// Selects the correct sprite and sets the corresponding background effect.
+		/// </summary>
+		public void RenderShield()
 		{
+			// use the corresponding element sprite
+			mainSprite.sprite = Element.ShieldSprite;
 
-		}
-
-		// Update is called once per frame
-		void Update()
-		{
-
+			// set the correct material for the shield
+			materialRenderer.material = Element.ElementMaterial;
 		}
 
 		void OnTriggerEnter2D(Collider2D col)
@@ -35,26 +39,26 @@ namespace Assets.Scripts
 				if (projectile != null)
 				{
 					// ignore the collision, if the projectile is coming from the same player
-					//if (projectile.PlayerId != PlayerId)
-					//{
-					Debug.Log($"The shield with the element { Element.Name } was hit by the projectile of element type { projectile.Element.Name }");
+					if (projectile.PlayerId != PlayerId)
+					{
+						Debug.Log($"The shield with the element { Element.Name } was hit by the projectile of element type { projectile.Element.Name }");
 
-					// only destroy the shield, if it was hit by an effective element projectile
-					if (projectile.Element.ElementId == Element.CounterPartElementId)
-					{
-						// destroy the shield
-						Destroy(gameObject, 0.1f);
-						// invoke event
-						ShieldDestroyed?.Invoke(this, new ShieldDestroyedEventArgs(this));
-						// destroy the projectile
-						Destroy(col.gameObject, 0f);
+						// only destroy the shield, if it was hit by an effective element projectile
+						if (projectile.Element.ElementId == Element.CounterPartElementId)
+						{
+							// destroy the shield
+							Destroy(gameObject, 0.1f);
+							// invoke event
+							ShieldDestroyed?.Invoke(this, new ShieldDestroyedEventArgs(this));
+							// destroy the projectile
+							Destroy(col.gameObject, 0f);
+						}
+						else
+						{
+							// only destroy the projectile
+							Destroy(col.gameObject, 0f);
+						}
 					}
-					else
-					{
-						// only destroy the projectile
-						Destroy(col.gameObject, 0f);
-					}
-					//}
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,24 @@ namespace Assets.Scripts
 		public string PlayerId { get; private set; }
 
 		// key: Element ID, value: count of shields
-		public Dictionary <int, int> shieldCounts { get; private set; }
+		public Dictionary<int, int> shieldCounts { get; private set; }
+
+
+		public bool IsPlayerDead
+		{
+			get
+			{
+				bool result = false;
+
+				if (shieldCounts != null)
+				{
+					result = shieldCounts.Values.ToList().TrueForAll(count => count <= 0);
+				}
+
+				return result;
+			}
+			private set { }
+		}
 
 		public bool IsCom;
 
@@ -22,7 +40,8 @@ namespace Assets.Scripts
 
 		private PlayerInventory _inventory;
 
-		void Awake()
+		// Start is called before the first frame update
+		void Start()
 		{
 			PlayerId = Guid.NewGuid().ToString();
 			shieldCounts = new Dictionary<int, int>();
@@ -30,11 +49,8 @@ namespace Assets.Scripts
 			{
 				shieldCounts.Add(element.ElementId, 0);
 			}
-		}
 
-		// Start is called before the first frame update
-		void Start()
-		{
+
 			_cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 			_rb = GetComponentInParent<Rigidbody2D>();
 
@@ -81,5 +97,36 @@ namespace Assets.Scripts
 			Destroy(munitionGameObject);
 		}
 
+		public void RemoveShield(ElementalShield shield)
+		{
+			int currentCount = shieldCounts[shield.Element.ElementId];
+
+			if (currentCount > 0)
+			{
+				shieldCounts[shield.Element.ElementId]--;
+			}
+
+			// check of dead
+			if (IsPlayerDead)
+			{
+				PlayerDied?.Invoke(this, new PlayerDiedEventArgs(transform.parent.gameObject, this));
+			}
+		}
+
+		#region Events
+		public event EventHandler<PlayerDiedEventArgs> PlayerDied;
+
+		public class PlayerDiedEventArgs : EventArgs
+		{
+			public PlayerDiedEventArgs(GameObject playerObject, PlayerController player)
+			{
+				PlayerObject = playerObject;
+				Player = player;
+			}
+
+			public PlayerController Player { get; set; }
+			public GameObject PlayerObject { get; set; }
+		}
+		#endregion
 	}
 }

@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5042948723601810046}
   - component: {fileID: 5042948723601810033}
+  - component: {fileID: 8613647234272895055}
   m_Layer: 0
   m_Name: ComPlayer
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5042948723601810047}
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.27, y: 0.27, z: 0.27}
   m_Children:
@@ -48,7 +49,7 @@ Transform:
   - {fileID: 5042948723677907041}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!50 &5042948723601810033
 Rigidbody2D:
   serializedVersion: 4
@@ -70,6 +71,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8613647234272895055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042948723601810047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fb16369c7f1254aaa5b5c026119814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 12
+  smoothFactor: 0.8
+  PlayerController: {fileID: 2028385088997227896}
 --- !u!1 &5042948723677907054
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5042948723677907041}
+  - component: {fileID: 277314578}
   m_Layer: 0
   m_Name: ElementalShieldRotator
   m_TagString: Untagged
@@ -100,6 +117,23 @@ Transform:
   m_Father: {fileID: 5042948723601810046}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &277314578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042948723677907054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b965934d2c35454da04448aaf90ea86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShieldPrefab: {fileID: 310236172218577895, guid: f09bf4074b1a7ed489cd3fe09c443fbc,
+    type: 3}
+  ShieldDistanceFromCenter: 1.2
+  ElementalShieldMoveSpeed: 1.9
+  ShieldCount: 9
 --- !u!1 &5042948723813608644
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,8 +145,9 @@ GameObject:
   - component: {fileID: 5042948723813608646}
   - component: {fileID: 5042948723813608647}
   - component: {fileID: 5042948723813609272}
+  - component: {fileID: 2028385088997227896}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Com
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +209,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4e44080993bb4264ba18f18a17d72617, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5566038, g: 0.375445, b: 0.41952446, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -200,6 +235,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.5599997
+--- !u!114 &2028385088997227896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042948723813608644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf5fdd51a3aba84ba828654a1689301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsCom: 1
 --- !u!1001 &6675388923512572372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -267,6 +315,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 4756534114619221972, guid: 26880302fc43e2147b7eb16001b02c7d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: edf0c6f97a6c8134db659a76d0a3a4d9, type: 2}
     m_RemovedComponents:
     - {fileID: 1828349292859700968, guid: 26880302fc43e2147b7eb16001b02c7d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 26880302fc43e2147b7eb16001b02c7d, type: 3}

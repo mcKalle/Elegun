@@ -9,6 +9,8 @@ namespace Assets.Scripts
 		public float moveSpeed = 12f;
 		public float smoothFactor = 0.8f;
 
+		public PlayerController PlayerController;
+
 		private Rigidbody2D rb;
 
 		void Start()

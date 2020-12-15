@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
 using Assets.Scripts.Data;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static Assets.Scripts.PlayerController;
 
 namespace Assets.Scripts
 {
@@ -37,8 +41,6 @@ namespace Assets.Scripts
 		void Start()
 		{
 			InitSettings();
-
-			InitUi();
 		}
 
 		// Update is called once per frame
@@ -58,24 +60,101 @@ namespace Assets.Scripts
 				{
 					shield.ElementalShieldMoveSpeed = PlayerShieldRotationSpeed;
 				}
+
+				player.PlayerController.PlayerDied += MainPlayeDiedEvent;
 			}
 
 			var coms = FindObjectsOfType<ComMovement>();
 			foreach (var com in coms)
 			{
 				com.moveSpeed = ComMoveSpeed;
+
 				var shield = com.GetComponent<ElementalShieldRotator>();
 				if (shield != null)
 				{
 					shield.ElementalShieldMoveSpeed = ComShieldRotationSpeed;
 				}
+
+				com.PlayerController.PlayerDied += ComPlayerDiedEvent;
 			}
 
 		}
 
-		public void InitUi()
+		private void MainPlayeDiedEvent(object sender, PlayerDiedEventArgs e)
 		{
+			Debug.Log("Main Player Dead.");
+		}
 
+		private void ComPlayerDiedEvent(object sender, PlayerDiedEventArgs e)
+		{
+			Debug.Log("Main Player Dead.");
+
+			Destroy(e.PlayerObject, 0f);
+			ShowToast(e.PlayerObject.name + " hat den Kampf verloren...", 3);
+		}
+
+		public Image deathPanel;
+		public TextMeshProUGUI deathText;
+
+		void ShowToast(string text,
+			int duration)
+		{
+			StartCoroutine(showToastCOR(text, duration));
+		}
+
+		private IEnumerator showToastCOR(string text, int duration)
+		{
+			Color orginalColor = deathPanel.color;
+
+			deathText.text = text;
+			deathPanel.enabled = true;
+			deathText.enabled = true;
+
+			//Fade in
+			yield return fadeInAndOut(deathPanel, true, 1f);
+
+			//Wait for the duration
+			float counter = 0;
+			while (counter < duration)
+			{
+				counter += Time.deltaTime;
+				yield return null;
+			}
+
+			//Fade out
+			yield return fadeInAndOut(deathPanel, false, 4f);
+
+			deathPanel.enabled = false;
+			deathText.enabled = false;
+			deathPanel.color = orginalColor;
+		}
+
+		IEnumerator fadeInAndOut(Image targetImage, bool fadeIn, float duration)
+		{
+			//Set Values depending on if fadeIn or fadeOut
+			float a, b;
+			if (fadeIn)
+			{
+				a = 0f;
+				b = 1f;
+			}
+			else
+			{
+				a = 1f;
+				b = 0f;
+			}
+
+			Color currentColor = Color.clear;
+			float counter = 0f;
+
+			while (counter < duration)
+			{
+				counter += Time.deltaTime;
+				float alpha = Mathf.Lerp(a, b, counter / duration);
+
+				targetImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
+				yield return null;
+			}
 		}
 	}
 }

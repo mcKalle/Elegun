@@ -60,7 +60,7 @@ namespace Assets.Scripts
 			waterMunitionInventoryCount = GameObject.FindGameObjectWithTag("waterMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
 			
 			// shield images
-			var shields = Resources.LoadAll<Sprite>("ShieldImages");
+			var shields = Resources.LoadAll<Sprite>("ShieldImages_UI");
 			greenShieldimages = new Sprite[shields.Length / 3];
 			blueShieldimages = new Sprite[shields.Length / 3];
 			redShieldimages = new Sprite[shields.Length / 3];
