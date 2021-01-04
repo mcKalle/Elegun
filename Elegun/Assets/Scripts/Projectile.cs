@@ -28,7 +28,7 @@ namespace Assets.Scripts
 
 		private void Move()
 		{
-			transform.position += (transform.up * -1) * Time.deltaTime * ShootingSpeed;
+			transform.position += transform.up * Time.deltaTime * ShootingSpeed;
 		}
 
 	}

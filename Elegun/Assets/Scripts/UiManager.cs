@@ -71,15 +71,15 @@ namespace Assets.Scripts
 				int number = int.Parse(shield.name.Split('-')[1]);
 				if (name.ToLower().Contains("green"))
 				{
-					greenShieldimages[number - 1] = shield;
+					greenShieldimages[number] = shield;
 				}
 				else if (name.ToLower().Contains("blue"))
 				{
-					blueShieldimages[number - 1] = shield;
+					blueShieldimages[number] = shield;
 				}
 				else if (name.ToLower().Contains("red"))
 				{
-					redShieldimages[number - 1] = shield;
+					redShieldimages[number] = shield;
 				}
 			}
 
@@ -92,13 +92,13 @@ namespace Assets.Scripts
 			switch (e.Element.ElementId)
 			{
 				case 0:
-					redShieldImageControl.sprite = redShieldimages[playerController.shieldCounts[e.Element.ElementId] - 1];
+					redShieldImageControl.sprite = redShieldimages[playerController.shieldCounts[e.Element.ElementId]];
 					break;
 				case 1:
-					greenShieldImageControl.sprite = greenShieldimages[playerController.shieldCounts[e.Element.ElementId] - 1];
+					greenShieldImageControl.sprite = greenShieldimages[playerController.shieldCounts[e.Element.ElementId]];
 					break;
 				case 2:
-					blueShieldImageControl.sprite = blueShieldimages[playerController.shieldCounts[e.Element.ElementId] - 1];
+					blueShieldImageControl.sprite = blueShieldimages[playerController.shieldCounts[e.Element.ElementId]];
 					break;
 				default:
 					break;

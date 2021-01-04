@@ -74,7 +74,7 @@ namespace Assets.Scripts
 		void RotatePlayer()
 		{
 			Vector2 lookDir = _mousePos - _rb.position;
-			float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90;
+			float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
 			transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
 		}
 
