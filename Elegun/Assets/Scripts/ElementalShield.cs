@@ -27,7 +27,12 @@ namespace Assets.Scripts
 			mainSprite.sprite = Element.ShieldSprite;
 
 			// set the correct material for the shield
-			materialRenderer.material = Element.ElementMaterial;
+			materialRenderer.material = Element.ElementBackgroundMaterial;
+		}
+
+		private void Update()
+		{
+			transform.Rotate(new Vector3(0, 0, -1), 7f);
 		}
 
 		void OnTriggerEnter2D(Collider2D col)

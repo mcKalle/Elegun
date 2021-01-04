@@ -42,7 +42,7 @@ namespace Assets.Scripts
 			if (meshRenderer != null)
 			{
 				meshRenderer.material =
-					GameManager.Instance.Elements[elementId].ElementMaterial;
+					GameManager.Instance.Elements[elementId].ElementBackgroundMaterial;
 			}
 		}
 

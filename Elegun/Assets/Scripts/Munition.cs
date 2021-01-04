@@ -10,6 +10,7 @@ namespace Assets.Scripts
 		public float minTimeAlive;
 		public float maxTimeAlive;
 
+		public SpriteRenderer minimapRenderer;
 
 		void Start()
 		{

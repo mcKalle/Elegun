@@ -119,8 +119,11 @@ namespace Assets.Scripts
 
 			if (spriteRenderer != null)
 			{
-				spriteRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementMaterial;
+				spriteRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementBackgroundMaterial;
 			}
+
+			// set minimap indication color
+			munition.minimapRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementColorMaterial;
 		}
 	}
 }

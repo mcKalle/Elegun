@@ -9,8 +9,8 @@ namespace Assets.Scripts.Data
 
 		public int ElementId;
 		public string Name;
-		public Color ElementColor;
-		public Material ElementMaterial;
+		public Material ElementColorMaterial;
+		public Material ElementBackgroundMaterial;
 
 		public Sprite MunitionSprite;
 		public Sprite ProjectileSprite;
