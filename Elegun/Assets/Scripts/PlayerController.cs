@@ -3,18 +3,24 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Global;
+using static ForceField;
 
 namespace Assets.Scripts
 {
+	[RequireComponent(typeof(PlayerInventory))]
 	public class PlayerController : MonoBehaviour
 	{
 		public string PlayerId { get; private set; }
 
+		public ForceField forceField;
+
+		public bool AbsorbMunitionFromForceField = true;
+
 		// key: Element ID, value: count of shields
 		public Dictionary<int, int> shieldCounts { get; private set; }
 
-
-		public bool IsPlayerDead
+		public bool AllShieldsDestroyed
 		{
 			get
 			{
@@ -38,7 +44,7 @@ namespace Assets.Scripts
 
 		private Rigidbody2D _rb;
 
-		private PlayerInventory _inventory;
+		public PlayerInventory Inventory;
 
 		// Start is called before the first frame update
 		void Start()
@@ -50,11 +56,20 @@ namespace Assets.Scripts
 				shieldCounts.Add(element.ElementId, 0);
 			}
 
-
 			_cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 			_rb = GetComponentInParent<Rigidbody2D>();
 
-			_inventory = FindObjectOfType<PlayerInventory>();
+			forceField.PlayerId = PlayerId;
+
+			if (AbsorbMunitionFromForceField)
+			{
+				forceField.MunitionAbsorbed += ForceFieldMunitionAbsorbed;
+			}
+		}
+
+		private void ForceFieldMunitionAbsorbed(object sender, MunitionAbsorbedEventArgs e)
+		{
+			Inventory.AddToInventory(e.Munition);
 		}
 
 		// Update is called once per frame
@@ -82,9 +97,30 @@ namespace Assets.Scripts
 		// collision methods
 		void OnTriggerEnter2D(Collider2D col)
 		{
-			if (col.tag == "Munition")
+			if (col.CompareTag(Constants.Tags.MUNITION))
 			{
 				PickUpMunition(col.gameObject);
+			}
+			else if (col.CompareTag(Constants.Tags.PROJECTILE))
+			{
+				// ignore the collision, if the player still has shields
+				// this is very unlikely to happen, but still possible
+				// if the player spams the fire button
+				if (AllShieldsDestroyed)
+				{
+					var projectile = col.gameObject.GetComponent<Projectile>();
+
+					if (projectile != null)
+					{
+						// ignore the collision, if the projectile is coming from the same player
+						if (projectile.PlayerId != PlayerId)
+						{
+							Destroy(projectile.gameObject);
+
+							PlayerDied?.Invoke(this, new PlayerDiedEventArgs(transform.parent.gameObject, this));
+						}
+					}
+				}
 			}
 		}
 
@@ -92,7 +128,8 @@ namespace Assets.Scripts
 		{
 			// add the element, that was picked up to the "inventory"
 			Munition munition = munitionGameObject.GetComponent<Munition>();
-			_inventory.AddToInventory(munition);
+			
+			Inventory?.AddToInventory(munition);
 
 			Destroy(munitionGameObject);
 		}
@@ -107,9 +144,9 @@ namespace Assets.Scripts
 			}
 
 			// check of dead
-			if (IsPlayerDead)
+			if (AllShieldsDestroyed)
 			{
-				PlayerDied?.Invoke(this, new PlayerDiedEventArgs(transform.parent.gameObject, this));
+				PlayerShieldsDestroyed?.Invoke(this, new PlayerShieldsDeactivatedEventArgs(transform.parent.gameObject, this));
 			}
 		}
 
@@ -119,6 +156,20 @@ namespace Assets.Scripts
 		public class PlayerDiedEventArgs : EventArgs
 		{
 			public PlayerDiedEventArgs(GameObject playerObject, PlayerController player)
+			{
+				PlayerObject = playerObject;
+				Player = player;
+			}
+
+			public PlayerController Player { get; set; }
+			public GameObject PlayerObject { get; set; }
+		}
+
+		public event EventHandler<PlayerShieldsDeactivatedEventArgs> PlayerShieldsDestroyed;
+
+		public class PlayerShieldsDeactivatedEventArgs : EventArgs
+		{
+			public PlayerShieldsDeactivatedEventArgs(GameObject playerObject, PlayerController player)
 			{
 				PlayerObject = playerObject;
 				Player = player;

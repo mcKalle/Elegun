@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,17 +15,15 @@ namespace Assets.Scripts
 		public float ShootingSpeed = 15f;
 
 		// private and inspector-hidden fields
-		private PlayerInventory inventory;
-		private PlayerController player;
+		private PlayerController _player;
 
-		private Transform gunPos;
+		private Transform _gunPos;
 
 		private void Start()
 		{
-			gunPos = GetComponent<Transform>();
-			inventory = FindObjectOfType<PlayerInventory>();
+			_gunPos = GetComponent<Transform>();
 
-			player = GetComponentInParent<PlayerController>();
+			_player = GetComponentInParent<PlayerController>();
 		}
 
 		private Projectile projectile;
@@ -33,7 +32,10 @@ namespace Assets.Scripts
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				Shoot();
+				if (!_player.IsCom)
+				{
+					Shoot();
+				}
 			}
 		}
 
@@ -60,17 +62,17 @@ namespace Assets.Scripts
 		/// <param name="amountOfShotProjectiles">The amount controls how many projectiles are shot at once.</param>
 		public void Shoot()
 		{
-			if (inventory.ShootingWithSelectedMunitionPossible())
+			if (_player.Inventory.ShootingWithSelectedMunitionPossible())
 			{
 				// Projectile is spawned without parent to get the correct size
-				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
+				projectile = Instantiate(ProjectilePrefab, _gunPos.position, _gunPos.rotation).GetComponent<Projectile>();
 
 				// this is set because for the collision detection between shield and munition, we want to ignore our own shields
-				projectile.PlayerId = player.PlayerId;
-				
-				projectile.Element = inventory.SelectedInventoryElement.Element;
+				projectile.PlayerId = _player.PlayerId;
+
+				projectile.Element = _player.Inventory.SelectedInventoryElement.Element;
 				// set correct color for the projectile
-				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
+				ChangeProjectileColor(projectile.gameObject, _player.Inventory.SelectedMunitionIndex);
 				// send if off
 				projectile.ShootingSpeed = ShootingSpeed;
 

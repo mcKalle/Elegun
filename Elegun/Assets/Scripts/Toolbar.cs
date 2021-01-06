@@ -26,12 +26,11 @@ namespace Assets.Scripts
 		public InventorySlot[] InventorySlots;
 
 		private int _slotIndex = 0;
-		private PlayerInventory _playerInventory;
+		public PlayerInventory MainPlayerInventory;
 
 		private void Start()
 		{
-			_playerInventory = FindObjectOfType<PlayerInventory>();
-			_playerInventory.InventoryUpdated += InventoryUpdatedEvent;
+			MainPlayerInventory.InventoryUpdated += InventoryUpdatedEvent;
 		}
 
 		private void Update()
@@ -61,7 +60,7 @@ namespace Assets.Scripts
 				}
 
 				Highlight.position = InventorySlots[_slotIndex].icon.transform.position;
-				_playerInventory.SelectedMunitionIndex = InventorySlots[_slotIndex].itemID;
+				MainPlayerInventory.SelectedMunitionIndex = InventorySlots[_slotIndex].itemID;
 			}
 		}
 

@@ -8,9 +8,11 @@ namespace Assets.Scripts
 {
 	public class PlayerInventory : MonoBehaviour
 	{
-		public int InitialMunitionCount;
+		public int InitialMunitionCount = 10;
 
 		private int _selectedMunitionIndex;
+
+		private PlayerController playerController;
 
 		public int SelectedMunitionIndex
 		{
@@ -50,7 +52,7 @@ namespace Assets.Scripts
 		// Start is called before the first frame update
 		private void Start()
 		{
-			_shooting = FindObjectOfType<Shooting>();
+			_shooting = GetComponentInChildren<Shooting>();
 
 			_shooting.ItemShot += ItemShotEvent; ;
 
@@ -61,22 +63,31 @@ namespace Assets.Scripts
 				MunitionItems.Add(new InventoryElement(GameManager.Instance.Elements[i], InitialMunitionCount));
 			}
 
+			playerController = GetComponent<PlayerController>();
+
 			PowerUp = new object();
 		}
 
 		public void AddToInventory(Munition munition)
 		{
-			var inventoryElement = MunitionItems.Find(item => item.Element.ElementId == munition.elementId);
+			var inventoryElement = MunitionItems.Find(item => item.Element == munition.Element);
 			if (inventoryElement != null)
 			{
-				inventoryElement.Count += munition.capacity;
+				inventoryElement.Count += munition.Capacity;
 			}
 
-			InventoryUpdated?.Invoke(this, new InventoryUpdatedEventArgs(inventoryElement));
+			Debug.Log($"Player { name } picked up { munition.Capacity } { munition.Element.Name } element(s).");
+
+			// only invoke event if the item is added to the main player's inventory
+			// otherwise the toolbar in the UI shouldn't be updated
+			if (!playerController.IsCom)
+			{
+				InventoryUpdated?.Invoke(this, new InventoryUpdatedEventArgs(inventoryElement));
+			}
 
 			// make sure to enable the loaded projectile 
 			// (it won't be updated when the current item is 0 and it is collected
-			if (!_shooting.LoadedProjectile.activeInHierarchy && munition.elementId == _selectedMunitionIndex)
+			if (!_shooting.LoadedProjectile.activeInHierarchy && munition.Element.ElementId == _selectedMunitionIndex)
 			{
 				_shooting.LoadedProjectile.SetActive(true);
 				_shooting.ChangeProjectileColor(_selectedMunitionIndex);

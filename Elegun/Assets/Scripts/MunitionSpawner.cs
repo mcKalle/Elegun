@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Data;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Assets.Scripts
 		public GameObject MunitionPrefab;
 		public int maxSpawnedElements;
 		public int InitialSpawnedElements;
+		public int StandardMunitionCapacity = 5;
 
 		public Transform SpawnPointLeftBottom;
 		public Transform SpawnPointTopRight;
@@ -32,7 +34,6 @@ namespace Assets.Scripts
 			InitialSpawn();
 
 			StartCoroutine(SpawnMunitionTimeBased());
-
 		}
 
 		private void Update()
@@ -62,7 +63,8 @@ namespace Assets.Scripts
 		{
 			GameObject munitionObject = Instantiate(MunitionPrefab, transform, false);
 			Munition munition = munitionObject.GetComponent<Munition>();
-			munition.elementId = RandomizeElement();
+			munition.Capacity = StandardMunitionCapacity;
+			munition.Element = RandomizeElement();
 			SetElementColor(munitionObject);
 
 			SpawnedMunitions.Add(munition);
@@ -106,9 +108,9 @@ namespace Assets.Scripts
 			return new Vector2(randomX, randomY);
 		}
 
-		public int RandomizeElement()
+		public Element RandomizeElement()
 		{
-			return Random.Range(0, 3);
+			return GameManager.Instance.Elements[Random.Range(0, GameManager.Instance.Elements.Length)];
 		}
 
 		public void SetElementColor(GameObject munitionGameObject)
@@ -119,11 +121,11 @@ namespace Assets.Scripts
 
 			if (spriteRenderer != null)
 			{
-				spriteRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementBackgroundMaterial;
+				spriteRenderer.material = GameManager.Instance.Elements[munition.Element.ElementId].ElementBackgroundMaterial;
 			}
 
 			// set minimap indication color
-			munition.minimapRenderer.material = GameManager.Instance.Elements[munition.elementId].ElementColorMaterial;
+			munition.minimapRenderer.material = GameManager.Instance.Elements[munition.Element.ElementId].ElementColorMaterial;
 		}
 	}
 }

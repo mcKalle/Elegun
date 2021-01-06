@@ -98,10 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ceb7cdab6529894ab9807f42ff56ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  capacity: 5
-  elementId: 0
-  minTimeAlive: 30
-  maxTimeAlive: 40
+  Capacity: 5
+  Element:
+    ElementId: 0
+    Name: 
+    ElementColorMaterial: {fileID: 0}
+    ElementBackgroundMaterial: {fileID: 0}
+    MunitionSprite: {fileID: 0}
+    ProjectileSprite: {fileID: 0}
+    ShieldSprite: {fileID: 0}
+    CounterPartElementId: 0
+  MinTimeAlive: 30
+  MaxTimeAlive: 40
   minimapRenderer: {fileID: 1151971398886619748}
 --- !u!58 &1095744349917174001
 CircleCollider2D:

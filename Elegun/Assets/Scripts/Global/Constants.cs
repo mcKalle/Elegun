@@ -11,6 +11,7 @@ namespace Assets.Scripts.Global
 		public struct Tags
 		{ 
 			public const string PROJECTILE = "Projectile";
+			public const string MUNITION = "Munition";
 			public const string INNER_PROJ = "InnerProjectile";
 			public const string GUN_DIST_MARK = "GunDistanceMarker";
 		}

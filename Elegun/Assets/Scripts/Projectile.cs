@@ -30,6 +30,5 @@ namespace Assets.Scripts
 		{
 			transform.position += transform.up * Time.deltaTime * ShootingSpeed;
 		}
-
 	}
 }

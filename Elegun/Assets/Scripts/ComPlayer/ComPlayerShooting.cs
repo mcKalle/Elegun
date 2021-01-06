@@ -14,22 +14,20 @@ namespace Assets.Scripts
 		public float ShootingSpeed = 15f;
 
 		// private and inspector-hidden fields
-		private PlayerInventory inventory;
-
-		private Transform gunPos;
-
+		private PlayerController _player;
+		private Transform _gunPos;
 
 		private void Start()
 		{
-			gunPos = GetComponent<Transform>();
-			inventory = FindObjectOfType<PlayerInventory>();
+			_gunPos = GetComponent<Transform>();
+
+			_player = GetComponentInParent<PlayerController>();
 		}
 
 		private Projectile projectile;
 
 		private void Update()
 		{
-
 			// shoot must be done from AI
 			// Shoot(1);
 		}
@@ -57,12 +55,12 @@ namespace Assets.Scripts
 		/// <param name="amountOfShotProjectiles">The amount controls how many projectiles are shot at once.</param>
 		private void Shoot(int amountOfShotProjectiles)
 		{
-			if (inventory.ShootingWithSelectedMunitionPossible())
+			if (_player.Inventory.ShootingWithSelectedMunitionPossible())
 			{
 				// Projectile is spawned without parent to get the correct size
-				projectile = Instantiate(ProjectilePrefab, gunPos.position, gunPos.rotation).GetComponent<Projectile>();
+				projectile = Instantiate(ProjectilePrefab, _gunPos.position, _gunPos.rotation).GetComponent<Projectile>();
 				// set correct color for the projectile
-				ChangeProjectileColor(projectile.gameObject, inventory.SelectedMunitionIndex);
+				ChangeProjectileColor(projectile.gameObject, _player.Inventory.SelectedMunitionIndex);
 				// send if off
 				projectile.ShootingSpeed = ShootingSpeed;
 				// update the count of the items in the inventory

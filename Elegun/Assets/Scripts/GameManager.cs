@@ -61,7 +61,8 @@ namespace Assets.Scripts
 					shield.ElementalShieldMoveSpeed = PlayerShieldRotationSpeed;
 				}
 
-				player.PlayerController.PlayerDied += MainPlayeDiedEvent;
+				player.PlayerController.PlayerShieldsDestroyed += MainPlayerShieldsDestroyed;
+				player.PlayerController.PlayerDied += MainPlayerDied;
 			}
 
 			var coms = FindObjectsOfType<ComMovement>();
@@ -75,23 +76,42 @@ namespace Assets.Scripts
 					shield.ElementalShieldMoveSpeed = ComShieldRotationSpeed;
 				}
 
-				com.PlayerController.PlayerDied += ComPlayerDiedEvent;
+				com.PlayerController.PlayerShieldsDestroyed += ComPlayerShieldsDestroyed;
+				com.PlayerController.PlayerDied += ComPlayerDied;
 			}
 
 		}
 
-		private void MainPlayeDiedEvent(object sender, PlayerDiedEventArgs e)
+		#region MainPlayerEvents
+		private void MainPlayerShieldsDestroyed(object sender, PlayerShieldsDeactivatedEventArgs e)
 		{
-			Debug.Log("Main Player Dead.");
+			Debug.Log("Main Player all Shields destroyed.");
+			Destroy(e.Player.forceField.gameObject, 0f);
+
+			ShowToast(e.PlayerObject.name + " ist jetzt verwundbar...", 1);
 		}
 
-		private void ComPlayerDiedEvent(object sender, PlayerDiedEventArgs e)
+		private void MainPlayerDied(object sender, PlayerDiedEventArgs e)
 		{
-			Debug.Log("Main Player Dead.");
+			Debug.Log("Main Player dead.");
+		}
+		#endregion
 
+		#region ComPlayerEvents
+		private void ComPlayerShieldsDestroyed(object sender, PlayerShieldsDeactivatedEventArgs e)
+		{
+			Debug.Log(e.Player.name + " all Shields destroyed.");
+			Destroy(e.Player.forceField.gameObject, 0f);
+
+			ShowToast(e.PlayerObject.name + " ist jetzt verwundbar...", 1);
+		}
+
+		private void ComPlayerDied(object sender, PlayerDiedEventArgs e)
+		{
 			Destroy(e.PlayerObject, 0f);
-			ShowToast(e.PlayerObject.name + " hat den Kampf verloren...", 3);
+			ShowToast(e.PlayerObject.name + " hat den Kampf verloren...", 1);
 		}
+		#endregion
 
 		public Image deathPanel;
 		public TextMeshProUGUI deathText;

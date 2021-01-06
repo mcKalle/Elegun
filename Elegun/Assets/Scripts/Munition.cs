@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Data;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
 	public class Munition : MonoBehaviour
 	{
-		public int capacity;
-		public int elementId;
+		public int Capacity;
+		public Element Element;
 
-		public float minTimeAlive;
-		public float maxTimeAlive;
+		public float MinTimeAlive;
+		public float MaxTimeAlive;
 
 		public SpriteRenderer minimapRenderer;
 
@@ -26,7 +27,7 @@ namespace Assets.Scripts
 
 		private float GetRandomTimeAlive()
 		{
-			return Random.Range(minTimeAlive, maxTimeAlive);
+			return Random.Range(MinTimeAlive, MaxTimeAlive);
 		}
 	}
 }
