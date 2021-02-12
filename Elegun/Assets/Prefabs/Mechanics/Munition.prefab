@@ -107,7 +107,8 @@ MonoBehaviour:
     MunitionSprite: {fileID: 0}
     ProjectileSprite: {fileID: 0}
     ShieldSprite: {fileID: 0}
-    CounterPartElementId: 0
+    InferiorElementId: 0
+    SuperiorElementId: 0
   MinTimeAlive: 30
   MaxTimeAlive: 40
   minimapRenderer: {fileID: 1151971398886619748}
@@ -279,7 +280,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: b3917f3458b69314fb55baf9309d120c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

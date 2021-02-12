@@ -35,8 +35,11 @@ namespace Assets.Scripts
 		Image waterMunitionImage;
 		TextMeshProUGUI waterMunitionInventoryCount;
 
-		public static UiManager Instance { get; private set; }
+		[Header("Cursor")]
+		public Texture2D cursorTexture;
+		public CursorMode cursorMode;
 
+		public static UiManager Instance { get; private set; }
 
 		private void Awake()
 		{
@@ -49,8 +52,9 @@ namespace Assets.Scripts
 				Debug.Log("Warning: multiple " + this + " in scene!");
 			}
 
-			// init all relevant UI controls
-			
+			//SetCursor(cursorTexture, sizeFactor);
+			Cursor.SetCursor(cursorTexture, new Vector2(0, 0), CursorMode.Auto);
+
 			// munition images
 			fireMunitionImage = GameObject.FindGameObjectWithTag("fireMunitionImage").GetComponent<Image>();
 			waterMunitionImage = GameObject.FindGameObjectWithTag("waterMunitionImage").GetComponent<Image>();
@@ -58,7 +62,7 @@ namespace Assets.Scripts
 			fireMunitionInventoryCount = GameObject.FindGameObjectWithTag("fireMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
 			grassMunitionInventoryCount = GameObject.FindGameObjectWithTag("grassMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
 			waterMunitionInventoryCount = GameObject.FindGameObjectWithTag("waterMunitionInventoryCount").GetComponent<TextMeshProUGUI>();
-			
+
 			// shield images
 			var shields = Resources.LoadAll<Sprite>("ShieldImages_UI");
 			greenShieldimages = new Sprite[shields.Length / 3];
@@ -85,6 +89,14 @@ namespace Assets.Scripts
 
 			// bind to event of shield rotator to get updates
 			shieldRotator.ShieldsUpdated += ShieldsUpdatedEvent; ;
+		}
+
+		void SetCursor(Texture2D tex, float sizeFactor)
+		{
+			float xspot = tex.width / 10;
+			float yspot = tex.height / 10;
+			Vector2 hotSpot = new Vector2(xspot, yspot);
+			Cursor.SetCursor(tex, hotSpot, cursorMode);
 		}
 
 		private void ShieldsUpdatedEvent(object sender, ShieldUpdatedEventArgs e)

@@ -17,6 +17,13 @@ namespace Assets.Scripts.Data
 
 		public Sprite ShieldSprite;
 
-		public int CounterPartElementId;
+		/// <summary>
+		/// The element, which IS effective to the current element.
+		/// </summary>
+		public int InferiorElementId;
+		/// <summary>
+		/// The element, which is NOT effective to the current element.
+		/// </summary>
+		public int SuperiorElementId;
 	}
 }

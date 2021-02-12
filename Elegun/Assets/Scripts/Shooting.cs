@@ -66,6 +66,7 @@ namespace Assets.Scripts
 			{
 				// Projectile is spawned without parent to get the correct size
 				projectile = Instantiate(ProjectilePrefab, _gunPos.position, _gunPos.rotation).GetComponent<Projectile>();
+				projectile.Direction = projectile.transform.up;
 
 				// this is set because for the collision detection between shield and munition, we want to ignore our own shields
 				projectile.PlayerId = _player.PlayerId;

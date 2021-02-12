@@ -10,6 +10,7 @@ namespace Assets.Scripts
 	{
 		[HideInInspector] public float ShootingSpeed = 25f;
 		[HideInInspector] public string PlayerId { get; set; }
+		[HideInInspector] public Vector3 Direction { get; set; }
 
 		public Element Element { get; set; }
 
@@ -28,7 +29,7 @@ namespace Assets.Scripts
 
 		private void Move()
 		{
-			transform.position += transform.up * Time.deltaTime * ShootingSpeed;
+			transform.position += Direction * Time.deltaTime * ShootingSpeed;
 		}
 	}
 }

@@ -32,7 +32,7 @@ namespace Assets.Scripts
 
 		private void Update()
 		{
-			transform.Rotate(new Vector3(0, 0, -1), 7f);
+			transform.Rotate(new Vector3(0, 0, -1), 3f);
 		}
 
 		void OnTriggerEnter2D(Collider2D col)
@@ -49,7 +49,7 @@ namespace Assets.Scripts
 						Debug.Log($"The shield with the element { Element.Name } was hit by the projectile of element type { projectile.Element.Name }");
 
 						// only destroy the shield, if it was hit by an effective element projectile
-						if (projectile.Element.ElementId == Element.CounterPartElementId)
+						if (projectile.Element.ElementId == Element.SuperiorElementId)
 						{
 							// destroy the shield
 							Destroy(gameObject, 0.1f);
@@ -57,6 +57,14 @@ namespace Assets.Scripts
 							ShieldDestroyed?.Invoke(this, new ShieldDestroyedEventArgs(this));
 							// destroy the projectile
 							Destroy(col.gameObject, 0f);
+						}
+						else if (projectile.Element.ElementId == Element.InferiorElementId)
+						{
+							// projectile will bounce off and can potentially harm the other players
+							// set the player id to this player, so the projectile is as if was shot by the player
+							projectile.PlayerId = PlayerId;
+							// bounce it back
+							projectile.Direction *= -1;
 						}
 						else
 						{

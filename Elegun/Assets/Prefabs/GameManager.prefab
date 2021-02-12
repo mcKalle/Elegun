@@ -46,29 +46,41 @@ MonoBehaviour:
   Elements:
   - ElementId: 0
     Name: Fire
-    ElementColor: {r: 1, g: 0, b: 0, a: 0}
-    ElementMaterial: {fileID: 2100000, guid: 3c55614ad8dba654b86ba60f906efa0f, type: 2}
+    ElementColorMaterial: {fileID: 2100000, guid: 4e081297937ae2741812f94473f0e49a,
+      type: 2}
+    ElementBackgroundMaterial: {fileID: 2100000, guid: 3c55614ad8dba654b86ba60f906efa0f,
+      type: 2}
     MunitionSprite: {fileID: 21300000, guid: 0a364e6e834577249b1effdcd043ae41, type: 3}
     ProjectileSprite: {fileID: 0}
-    ShieldSprite: {fileID: 21300000, guid: edd3ccd5fcb981644bc7146199ee2bce, type: 3}
-    CounterPartElementId: 3
+    ShieldSprite: {fileID: 21300000, guid: c61321ee0fdbb2f409535985e151122c, type: 3}
+    InferiorElementId: 1
+    SuperiorElementId: 2
   - ElementId: 1
     Name: Grass
-    ElementColor: {r: 0, g: 1, b: 0, a: 0}
-    ElementMaterial: {fileID: 2100000, guid: edf0c6f97a6c8134db659a76d0a3a4d9, type: 2}
+    ElementColorMaterial: {fileID: 2100000, guid: f668385f79965d649b66fad52c80124a,
+      type: 2}
+    ElementBackgroundMaterial: {fileID: 2100000, guid: edf0c6f97a6c8134db659a76d0a3a4d9,
+      type: 2}
     MunitionSprite: {fileID: 21300000, guid: 0a364e6e834577249b1effdcd043ae41, type: 3}
     ProjectileSprite: {fileID: 0}
-    ShieldSprite: {fileID: 21300000, guid: edd3ccd5fcb981644bc7146199ee2bce, type: 3}
-    CounterPartElementId: 1
+    ShieldSprite: {fileID: 21300000, guid: 68beaf1f55fbba04ab430c3448a37182, type: 3}
+    InferiorElementId: 2
+    SuperiorElementId: 0
   - ElementId: 2
     Name: Water
-    ElementColor: {r: 0, g: 0, b: 1, a: 0}
-    ElementMaterial: {fileID: 2100000, guid: 8bb18c2f16017824696a1032d165ed70, type: 2}
+    ElementColorMaterial: {fileID: 2100000, guid: c8e2b119da827ef4ca129eefeb5803fd,
+      type: 2}
+    ElementBackgroundMaterial: {fileID: 2100000, guid: 8bb18c2f16017824696a1032d165ed70,
+      type: 2}
     MunitionSprite: {fileID: 21300000, guid: 0a364e6e834577249b1effdcd043ae41, type: 3}
     ProjectileSprite: {fileID: 0}
-    ShieldSprite: {fileID: 21300000, guid: edd3ccd5fcb981644bc7146199ee2bce, type: 3}
-    CounterPartElementId: 1
-  PlayerShieldRotationSpeed: 1.9
+    ShieldSprite: {fileID: 21300000, guid: 5a6500e3d0b4ee74a9e3e1175cdaa633, type: 3}
+    InferiorElementId: 0
+    SuperiorElementId: 1
+  PlayerShieldRotationSpeed: 1.45
   PlayerMoveSpeed: 12
   ComShieldRotationSpeed: 1.4
   ComMoveSpeed: 10
+  mainPlayer: {fileID: 0}
+  deathPanel: {fileID: 0}
+  deathText: {fileID: 0}
