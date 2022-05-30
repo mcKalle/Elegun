@@ -16,11 +16,11 @@ namespace Assets.Scripts
 		public Element[] Elements;
 
 		[Header("Player Settings")]
-		public float PlayerShieldRotationSpeed = 1.9f;
-		public float PlayerMoveSpeed = 12f;
+		public float PlayerShieldRotationSpeed = 0.4f;
+		public float PlayerMoveSpeed = 10f;
 
 		[Header("Com Settings")]
-		public float ComShieldRotationSpeed = 1.4f;
+		public float ComShieldRotationSpeed = 0.4f;
 		public float ComMoveSpeed = 10f;
 
 		public PlayerController mainPlayer;
@@ -55,7 +55,7 @@ namespace Assets.Scripts
 			foreach (var player in players)
 			{
 				player.moveSpeed = PlayerMoveSpeed;
-				var shield = player.GetComponent<ElementalShieldRotator>();
+				var shield = player.GetComponentInChildren<ElementalShieldRotator>();
 				if (shield != null)
 				{
 					shield.ElementalShieldMoveSpeed = PlayerShieldRotationSpeed;
@@ -70,7 +70,7 @@ namespace Assets.Scripts
 			{
 				com.moveSpeed = ComMoveSpeed;
 
-				var shield = com.GetComponent<ElementalShieldRotator>();
+				var shield = com.GetComponentInChildren<ElementalShieldRotator>();
 				if (shield != null)
 				{
 					shield.ElementalShieldMoveSpeed = ComShieldRotationSpeed;
